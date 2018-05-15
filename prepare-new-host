@@ -3,176 +3,49 @@
 # Username of user on target host, this user MUST have sudo access and possibility to log via SSH
 TARGET_USER=semi
 
-# Do cleanup
-/bin/rm prepare-new-host_init.yml prepare-new-host.yml
+cd $(dirname $0)
 
-[ -z "$1" ] && echo "Usage: $(basename ${0}) ip-address-of-target-host"
-[ -z "$1" ] && exit 1
+# Do cleanup
+/bin/rm prepare-new-host_init.yml prepare-new-host.yml 2> /dev/null
+
+if [ ! -e "VAULT" ]; then
+	echo "You should put your VAULT password into file called 'VAULT'."
+	exit 1
+fi
+
+if [ -z "$1" ]; then
+	echo "Usage: $(basename ${0}) ip-address-of-target-host"
+	exit 1
+fi
 
 TARGET_HOST=${1}
 
-ping -c 1 ${1} > /dev/null || (
+ping -c 1 ${TARGET_HOST} > /dev/null || (
 echo "Target ${TARGET_HOST} is unavailable. Exiting."
 exit 1
 )
 
-# -> Functions here! Skip to main() function!
-
-function ansible_pre() {
+###
+# Should ask SSH and SUDO passwords, just to confirm that ansible and sshpass is installed
 [ -e .ansible_pre_done ] && return
 echo "Install ansible and sshpass on localhost" && \
 apt-get install ansible sshpass && \
 echo "Install ansible on target host" && \
 ssh -t ${TARGET_USER}@${TARGET_HOST} sudo apt-get install ansible && \
 touch .ansible_pre_done
-}
 
-function ansible_init() {
 ###
 ### Create group, user and set authorized_keys (ssh) and sudoers.
-[ -e .ansible_init_done ] && return
-[ -e $(basename ${0})_init.yml ] || \
-cat <<'EOF' > $(basename ${0})_init.yml
----
-- hosts: all
-  gather_facts: false
-
-  tasks:
-    - name: Add group 'ansible'
-      group:
-        name: ansible
-        state: present
-
-    - name: Add user 'ansible'
-      user:
-        name: ansible
-        comment: Common account for automation
-        shell: /bin/bash
-        uid: 999
-        group: ansible
-        groups: adm,sudo
-        append: yes
-
-    - name: Set authorized key for ansible from file
-      authorized_key:
-        user: ansible
-        state: present
-        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
-
-    - name: Allow sudo for ansible without password
-      lineinfile:
-        dest: /etc/sudoers
-        state: present
-        regexp: '^ansible'
-        line: 'ansible ALL=(ALL) NOPASSWD: ALL'
-        validate: 'visudo -cf %s'
-
-    - name: Disable requiretty (sudo) from ansible
-      lineinfile:
-        dest: /etc/sudoers
-        state: present
-        regexp: '^Defaults:ansible'
-        line: 'Defaults:ansible !requiretty'
-        validate: 'visudo -cf %s'
-EOF
-AUTH="--user=${TARGET_USER} --ask-pass --become --ask-become-pass"
-ansible-playbook -i ${TARGET_HOST}, $(basename ${0})_init.yml -l ${TARGET_HOST} ${AUTH} && touch .ansible_init_done
-}
-
-function ansible_head() {
-grep -v "^#" <<'EOF'
----
-- hosts: all
-  gather_facts: false
-
-  tasks:
-    - name: Install ansible
-      apt: name=ansible state=present
-
-EOF
-}
-
-function root_password() {
-grep -v "^#" <<'EOF'
-    - name: Change root password
-      user: name=root password="{{ ROOT_PASSWORD }}"
-
-EOF
-}
-
-function authorize_root() {
-grep -v "^#" <<'EOF'
-    - name: Set authorized key for root from file
-      authorized_key:
-        user: root
-        state: present
-        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
-
-EOF
-}
-
-function secure_ssh() {
-grep -v "^#" <<'EOF'
-# Original code from:
-# https://github.com/devcon-ph/devcon-ansible-playbook/blob/master/roles/setup/tasks/security.yml
-    - name: strict SSH access
-      lineinfile: >
-        dest=/etc/ssh/sshd_config
-        state=present
-        regexp='^#?{{ item.key }}'
-        line='{{ item.key }} {{ item.value }}'
-        validate='/usr/sbin/sshd -t -f %s'
-      with_items:
-        - { key: 'PermitRootLogin',        value: 'without-password'}
-        - { key: 'PasswordAuthentication', value: 'no'}
-        - { key: 'MaxAuthTries',           value: "1"}
-        - { key: 'LoginGraceTime',         value: "60"}
-        - { key: 'MaxSessions',            value: "6"}
-#       - { key: 'MaxStartups',            value: "10:30:60"}
-      notify: restart sshd
-
-EOF
-}
-
-function update_system() {
-grep -v "^#" <<'EOF'
-    - name: Update APT cache
-      apt:
-        update_cache: yes
-        cache_valid_time: 3600
-
-    - name: Install aptitude for upgrade
-      apt: name=aptitude state=present
-
-    - name: Upgrade system
-      apt: upgrade=safe
-
-EOF
-}
-
-function install_software() {
-grep -v "^#" <<'EOF'
-    - name: Install joe
-      apt: name=joe state=present
-
-EOF
-}
-
-###
-### EXECUTION STARTS HERE!
-###
-# Should ash SSH and SUDO passwords, just to confirm that ansible and sshpass is installed
-ansible_pre
 # First ansible run, should ask SSH and SUDO passwords again
-ansible_init
-(
-ansible_head
-update_system
-#root_password # Change root password
-authorize_root # Give authorized_keys to root and allow ssh. This could be BAD idea!
-secure_ssh
-install_software
-) > $(basename ${0}).yml
+[ -e .ansible_init_done ] && return
+AUTH="--user=${TARGET_USER} --ask-pass --become --ask-become-pass"
+ansible-playbook -i ${TARGET_HOST}, modules/z_ansible_init.yml -l ${TARGET_HOST} ${AUTH} && touch .ansible_init_done
+
+###
+### Create script combination from files in modules
+### I know that there is correct way to do this, but I like to do it this way,
+### for now. I may fix this later.
+(for a in modules/[0-9][0-9]_*.yml;do cat $a;echo;done) > $(basename ${0}).yml
 
 ### User, sudoers and authorized keys should be ready (ansible_init).  Test
 ### it, this should go without password.

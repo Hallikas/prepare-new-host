@@ -1,0 +1,104 @@
+packages:
+# Base stuff
+  - distro-info
+  - zfsutils-linux
+# Important tools
+  - joe
+  - git
+  - sshpass
+  - chrony
+# Security
+  - fail2ban
+  - sshguard
+# Network
+  - wget
+  - socat
+  - whois
+  - inetutils-telnet
+  - traceroute
+  - nfs-server
+  - iptables-persistent
+  - openvpn
+  - netfilter-persistent
+  - vlan
+  - bridge-utils
+  - dnsmasq
+  - bind9
+# Tools
+  - zip
+  - easy-rsa
+  - ssl-cert
+  - sqlite3
+  - apt-transport-https
+  - update-motd
+  - fontconfig
+  - apache2-utils
+# Productivity
+  - docker.io
+  - certbot
+# Developer
+  - build-essential
+  - autoconf
+  - automake
+# Email
+  - postfix
+  - postfix-mysql
+  - postfix-pcre
+  - postfix-ldap
+  - postfix-sqlite
+  - bsd-mailx
+  - dovecot-imapd
+  - dovecot-pop3d
+  - dovecot-sieve
+  - dovecot-managesieved
+  - dovecot-mysql
+  - dovecot-ldap
+  - dovecot-lmtpd
+  - procmail
+  - python-milter
+  - postgrey
+  - opendkim
+  - opendkim-tools
+# - amavisd-new
+  - rblcheck
+# LAMP
+  - mariadb-server
+  - nginx-extras
+  - mongodb-server
+#
+  - php7.2-cli
+  - php7.2-fpm
+
+# Web
+  - httpie
+
+# Services
+  - squid
+  - mumble-server
+  - pure-ftpd
+# Backups
+  - duplicity
+  - amanda-server
+  - amanda-client
+
+#
+# Todo, future
+#
+
+# Administrative
+# - monit
+# - rsyslog-mysql
+
+# X11
+# - rxvt
+
+# AD
+# - slapd
+# - sssd
+# - adcli
+# - ldap-utils
+# - sssd-tools
+# - sudo-ldap
+
+# percona-release
+# percona-xtrabackup-24

@@ -7,3 +7,9 @@ I don't know if other people can do anything with it, but at least it should ser
 2. Create normal user on installation process.
 
 ... Maybe I should create script for bootstrap whole base installation process?
+
+I'm running ansible now from RaspberryPi and it has only old Ansible
+2.0.0.2. That's why I need to strip some things like vault etc.
+I need to look after those later.
+
+ - Semi

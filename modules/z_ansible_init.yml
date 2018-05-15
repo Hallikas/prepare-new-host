@@ -1,0 +1,48 @@
+---
+- hosts: all
+  gather_facts: false
+
+  vars_files:
+    - conf/vars.yml
+
+  tasks:
+# This should be ok, done manually before executing yml
+#   - name: Install ansible
+#     apt: name=ansible state=present
+
+    - name: Add group 'ansible'
+      group:
+        name: ansible
+        state: present
+
+    - name: Add user 'ansible'
+      user:
+        name: ansible
+        comment: Common account for automation
+        shell: /bin/bash
+        uid: 999
+        group: ansible
+        groups: adm,sudo
+        append: yes
+
+    - name: Set authorized key for ansible from file
+      authorized_key:
+        user: ansible
+        state: present
+        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+
+    - name: Allow sudo for ansible without password
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^ansible'
+        line: 'ansible ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: Disable requiretty (sudo) from ansible
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^Defaults:ansible'
+        line: 'Defaults:ansible !requiretty'
+        validate: 'visudo -cf %s'
