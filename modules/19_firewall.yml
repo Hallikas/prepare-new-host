@@ -1,5 +1,5 @@
-    - name: Setup firewall
-      ufw: state=enabled policy=deny
+#   - name: Setup firewall
+#     ufw: state=enabled policy=deny
 
-    - name: Firewall, Allow ssh
-      ufw: rule=allow port=22 proto=tcp
+#   - name: Firewall, Allow ssh
+#     ufw: rule=allow port=22 proto=tcp

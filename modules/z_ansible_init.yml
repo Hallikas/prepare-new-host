@@ -3,7 +3,7 @@
   gather_facts: false
 
   vars_files:
-    - conf/vars.yml
+    - ../conf/vars.yml
 
   tasks:
 # This should be ok, done manually before executing yml
@@ -20,9 +20,8 @@
         name: ansible
         comment: Common account for automation
         shell: /bin/bash
-        uid: 999
+        uid: 991
         group: ansible
-        groups: adm,sudo
         append: yes
 
     - name: Set authorized key for ansible from file

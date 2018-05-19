@@ -2,8 +2,8 @@ VAULT
 *~
 *.bak
 *.vara
-.ansible_pre_done
-.ansible_init_done
+.ansible_pre_done*
+.ansible_init_done*
 prepare-new-host.yml
 prepare-new-host_init.yml
 doit
