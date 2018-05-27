@@ -1,8 +1,8 @@
 #_packages.yml
-#yum
-ansible_handlers
-_root_
-firewall
-secure_ssh
-_yum
-_common_packages
+#_apt_pre
+#ansible_handlers
+#_root_
+#firewall
+#secure_ssh
+#_yum
+#_common_packages

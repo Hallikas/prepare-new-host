@@ -42,16 +42,37 @@ apt_packages:
   - vlan
   - iptables-persistent
   - netfilter-persistent
-  - nfs-server
+  - nfs-kernel-server
   - ssl-cert
 #
   - nginx-extras
   - mariadb-server
   - php7.2-cli
   - php7.2-fpm
+  - php7.2-mysql
 #
+  - postfix
+  - postfix-mysql
+  - postfix-pcre
+  - postfix-ldap
+  - postfix-sqlite
+  - python-milter
+  - postgrey
+  - opendkim
+  - opendkim-tools
 
-
+  - dovecot-lmtpd
+  - dovecot-mysql
+  - dovecot-imapd
+  - dovecot-pop3d
+  - dovecot-sieve
+  - dovecot-managesieved
+  - dovecot-ldap
+  - procmail
+#
+  - shellinabox
+# Atlassian products fails with newer packages
+  - openjdk-8-jdk-headless
 
 # Network
 # - dnsmasq
@@ -67,23 +88,6 @@ apt_packages:
 # - docker.io
 # - certbot
 # Email
-# - postfix
-# - postfix-mysql
-# - postfix-pcre
-# - postfix-ldap
-# - postfix-sqlite
-# - dovecot-imapd
-# - dovecot-pop3d
-# - dovecot-sieve
-# - dovecot-managesieved
-# - dovecot-mysql
-# - dovecot-ldap
-# - dovecot-lmtpd
-# - procmail
-# - python-milter
-# - postgrey
-# - opendkim
-# - opendkim-tools
 # - amavisd-new
 # - rblcheck
 # LAMP
