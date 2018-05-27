@@ -1,0 +1,28 @@
+    - name: debian.cnf
+      template: src=mysql/debian.cnf.j2 dest=/etc/mysql/debian.cnf backup=yes
+
+    - name: mariadb.cnf
+      template: src=mysql/mariadb.conf.j2 dest=/etc/mysql/mariadb.conf.d/50-server.cnf backup=yes
+      register: myconf
+
+    - name: Check if maridb db-directory exists
+      stat: path="{{ my_datadir }}"
+      register: mydir
+
+    - name: stop mariadb
+      service: name=mysqld state=stopped
+      when: myconf.changed or not mydir.stat.exists
+
+    - name: Install base database
+      command: mysql_install_db --skip-auth-anonymous-user
+      register: myisnew
+      when: not mydir.stat.exists
+
+    - name: start mariadb
+      service: name=mysqld state=started
+
+# Extra thing, just for reminder for now
+#   - name: Assure that our timezone is installed
+#     shell: |
+#           mysql_tzinfo_to_sql /usr/share/zoneinfo/Europe/Helsinki Europe/Helsinki | mysql -u root mysql
+#     when: myisnew.changed
