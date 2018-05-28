@@ -1,8 +1,8 @@
     - name: debian.cnf
-      template: src=mysql/debian.cnf.j2 dest=/etc/mysql/debian.cnf backup=yes
+      template: src=mysql/debian.cnf dest=/etc/mysql/debian.cnf backup=yes
 
     - name: mariadb.cnf
-      template: src=mysql/mariadb.conf.j2 dest=/etc/mysql/mariadb.conf.d/50-server.cnf backup=yes
+      template: src=mysql/mariadb.conf dest=/etc/mysql/mariadb.conf.d/50-server.cnf backup=yes
       register: myconf
 
     - name: Check if maridb db-directory exists

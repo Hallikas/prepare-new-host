@@ -52,7 +52,8 @@ fi
 ### Create script combination from files in modules
 ### I know that there is correct way to do this, but I like to do it this way,
 ### for now. I may fix this later.
-(for a in $(ls modules/[0-9][0-9]_*.yml|grep -vf conf/modules2skip);do cat $a;echo;done) > $(basename ${0}).yml
+(for a in $(ls modules/[0-9][0-9]_*.yml);do cat $a;echo;done) > $(basename ${0}).yml
+#(for a in $(ls modules/{00,25,99}_*.yml);do cat $a;echo;done) > $(basename ${0}).yml
 
 ### User, sudoers and authorized keys should be ready (ansible_init).  Test
 ### it, this should go without password.

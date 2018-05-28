@@ -1,10 +1,10 @@
 VAULT
+vault.yml
 *~
 *.bak
 *.vara
-.ansible_pre_done*
-.ansible_init_done*
-prepare-new-host.yml
-prepare-new-host_init.yml
+.ansible_*
+prepare-new-host*.yml
+prepare-new-host.retry
 doit
 test*

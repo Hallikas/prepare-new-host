@@ -1,2 +1,2 @@
     - name: nfs-server
-      template: src=nfs-server/exports.j2 dest=/etc/exports backup=yes
+      template: src=nfs-server/exports dest=/etc/exports backup=yes
