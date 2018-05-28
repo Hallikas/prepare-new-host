@@ -1,0 +1,11 @@
+[DEFAULT]
+nginx_error_log = /var/log/nginx/error.log
+
+nginx_access_log = /var/log/nginx/access.log
+vsftpd_log = /var/log/vsftpd.log
+postfix_log = %(syslog_mail_warn)s
+
+dovecot_log = /var/log/dovecot.log
+mysql_log = /var/log/mysqld.log
+
+#roundcube_errors_log = /data/www/sites/hallikas/roundcube/logs/errors

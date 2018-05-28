@@ -1,0 +1,8 @@
+    - name: Dovecot configuration
+      template: src=dovecot/dovecot.conf dest=/etc/dovecot backup=yes
+
+    - name: Dovecot configuration, mysql support
+      template: src=dovecot/dovecot-sql.conf.ext dest=/etc/dovecot backup=yes
+
+    - name: Restart dovecot
+      service: name=dovecot state=restarted

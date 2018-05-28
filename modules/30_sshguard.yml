@@ -1,0 +1,5 @@
+    - name: defaults for sshguard
+      template: src=sshguard/defaults dest=/etc/default/sshguard backup=yes
+
+    - name: Restart sshguard
+      service: name=sshguard state=restarted

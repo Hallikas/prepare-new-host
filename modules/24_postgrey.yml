@@ -1,0 +1,15 @@
+    - name: postgrey whitelist clients
+      template: src=postgrey/whitelist_clients.local dest=/etc/postgrey/whitelist_clients.local force=no
+
+    - name: postgrey whitelist recipients
+      template: src=postgrey/whitelist_recipients.local dest=/etc/postgrey/whitelist_recipients.local force=no
+
+    - name: Configure postgrey to listen only loopback
+      lineinfile:
+        path: /etc/default/postgrey
+        regexp: '^#?POSTGREY_OPTS'
+        line: 'POSTGREY_OPTS="--inet=127.0.0.1:10023"'
+        state: present
+
+    - name: Restart postgrey
+      service: name=postgrey state=restarted

@@ -1,0 +1,62 @@
+    - file: path="/etc/opendkim/{{ item.path }}" state=directory owner="{{ item.owner }}" group="{{ item.group}}" mode="{{ item.mode }}"
+      with_filetree: templates/opendkim
+      when: item.state == 'directory'
+      no_log: True
+
+    - name: "Use vaulted KeyTable"
+      copy: >
+        content="{{ opendkim_keytable}}"
+        dest='/etc/opendkim/KeyTable' backup=yes
+        owner=root group=mail mode=644
+      when: opendkim_keytable is defined
+      no_log: True
+
+    - name: "Use vaulted SigningTable"
+      copy: >
+        content="{{ opendkim_signingtable}}"
+        dest='/etc/opendkim/SigningTable' backup=yes
+        owner=root group=mail mode=644
+      when: opendkim_signingtable is defined
+      no_log: True
+
+    - name: "Use vaulted TrustedHosts"
+      copy: >
+        content="{{ opendkim_trustedhosts}}"
+        dest='/etc/opendkim/TrustedHosts' backup=yes
+        owner=root group=mail mode=644
+      when: opendkim_trustedhosts is defined
+      no_log: True
+
+    - name: "Use vaulted private DNS file"
+      copy: >
+        content="{{ opendkim_txt}}"
+        dest='/etc/opendkim/keys/default.txt' backup=yes
+        owner=root group=mail mode=644
+      when: opendkim_txt is defined
+      no_log: True
+
+    - name: "Use vaulted private key"
+      copy: >
+        content="{{ opendkim_key}}"
+        dest='/etc/opendkim/keys/default.private' backup=yes
+        owner=root group=mail mode=644
+      when: opendkim_key is defined
+      no_log: True
+
+    - name: "Check if we have default.private, or do we need to generate one"
+      stat:
+        path: /etc/opendkim/keys/default.private
+      register: opendkimkeys
+      
+    - name: "Generate opendkim keys (default.private and default.txt)"
+      shell: opendkim-genkey --domain="{{ ansible_domain }}" --subdomains --directory=/etc/opendkim/keys
+      when: not opendkimkeys.stat.exists
+
+    - name: "Copy default template files"
+      template: src="opendkim/{{ item.path }}" dest="/etc/opendkim/{{ item.path }}" owner="{{ item.owner }}" group="{{ item.group}}" mode="{{ item.mode }}" force=no
+      with_filetree: templates/opendkim
+      when: item.state == 'file'
+      no_log: True
+
+    - name: Restart opendkim
+      service: name=opendkim state=restarted

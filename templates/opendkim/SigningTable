@@ -1,0 +1,1 @@
+*@{{ ansible_domain }} mail._domainkey.{{ ansible_domain }}

@@ -1,0 +1,1 @@
+mail._domainkey.{{ ansible_domain }} {{ ansible_domain }}:mail:/etc/opendkim/keys/default.private

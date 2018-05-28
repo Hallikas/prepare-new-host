@@ -1,0 +1,38 @@
+    - file: path="/etc/postfix/{{ item.path }}" state=directory owner="{{ item.owner }}" group="{{ item.group}}" mode="{{ item.mode }}"
+      with_filetree: templates/postfix
+      when: item.state == 'directory'
+      no_log: True
+
+    - name: "Copy default template files"
+      template: src="postfix/{{ item.path }}" dest="/etc/postfix/{{ item.path }}" owner="{{ item.owner }}" group="{{ item.group}}" mode="{{ item.mode }}" backup=yes
+      with_filetree: templates/postfix
+      when: item.state == 'file'
+      no_log: True
+
+    - file:
+        path: "/data/vmail"
+        state: directory
+        owner: 8
+        group: 8
+        mode: 0770
+
+    - name: "Check for transport.db"
+      stat:
+        path: /etc/postfix/transport.db
+      register: transportdb
+      
+    - name: "Rehash transport"
+      shell: postmap hash:/etc/postfix/transport
+      when: not transportdb.stat.exists
+
+    - name: "Check for virtual.db"
+      stat:
+        path: /etc/postfix/virtual.db
+      register: virtualdb
+      
+    - name: "Rehash virtual"
+      shell: postmap hash:/etc/postfix/virtual
+      when: not virtualdb.stat.exists
+
+    - name: Restart postfix
+      service: name=postfix state=restarted

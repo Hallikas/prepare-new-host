@@ -1,0 +1,8 @@
+user = {{ postfix_user }}
+password = {{ postfix_pass }}
+hosts = {{ db_host }}
+dbname = {{ postfix_db }}
+table = alias
+select_field = goto
+where_field = address
+additional_conditions = and active = '1'

@@ -1,0 +1,27 @@
+37.59.58.128
+104.233.90.182
+93.90.52.20
+93.90.52.21
+93.90.52.22
+93.90.52.23
+{{ ansible_domain }}
+mail.{{ ansible_domain }}
+mta1.startssl.com
+startssl.com
+cluster-f.mailcontrol.com
+mail-mx-atm.gog.com
+eu-west-1.amazonses.com
+mail.alibaba.com
+cpanel.cloudatcost.com
+smtp-sso.ubnt.com
+/^.*\.smtp-out\.eu-west-1\.amazonses\.com$/
+/^.*\.smtp-out.*\.amazonses\.com$/
+/^.*\.startcom\.org$/
+/^.*\.startssl\.com$/
+/^.*-out-.*\.google\.com$/
+/^.*\.mailcontrol\.com$/
+/^.*\.hotmail\.com$/
+/^.*\.outlook\.com$/
+/^.*\.facebook\.com$/
+/^.*\.compute-1\.armhosting\.org$/
+/^.*\.mail\.alibaba\.com$/

@@ -1,0 +1,5 @@
+127.0.0.1
+localhost
+10.0.0.0/8
+
+*.{{ ansible_domain }}

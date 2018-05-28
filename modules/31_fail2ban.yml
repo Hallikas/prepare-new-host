@@ -1,0 +1,8 @@
+    - name: Fail2ban local jail
+      template: src=fail2ban/jail.local dest=/etc/fail2ban backup=yes force=no
+
+    - name: Fail2ban local paths-overrides
+      template: src=fail2ban/paths-overrides.local dest=/etc/fail2ban backup=yes force=no
+
+    - name: Restart fail2ban
+      service: name=fail2ban state=restarted

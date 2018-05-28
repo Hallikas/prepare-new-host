@@ -1,0 +1,18 @@
+[dovecot]
+enabled  = true
+filter   = dovecot
+action   = iptables-multiport[name=dovecot, port="pop3,pop3s,imap,imaps", protocol=tcp]
+#          sendmail-whois[name=dovecot, dest=root@{{ ansible_domain }}, sender=root@{{ ansible_domain }}]
+logpath  = /var/log/dovecot.log
+maxretry = 3
+findtime = 900
+bantime  = 900
+
+[mysqld-auth]
+enabled = false
+filter = mysqld
+port = 3306
+logpath = /var/log/mysqld.log
+maxretry = 1
+findtime = 3600
+bantime  = 3600

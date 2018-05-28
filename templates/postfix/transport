@@ -1,0 +1,6 @@
+#jira.{{ ansible_domain }}	smtp:[dev]
+#hotmail.com		smtp:[mail2.{{ ansible_domain }}]:25
+#outlook.com		smtp:[mail2.{{ ansible_domain }}]:25
+#dna.fi			smtp:[mail2.{{ ansible_domain }}]:25
+#cmrecycling.co.uk	smtp:[mail2.{{ ansible_domain }}]:25
+#gmail.com		smtp:[mail2.{{ ansible_domain }}]:25

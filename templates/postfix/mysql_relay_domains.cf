@@ -1,0 +1,5 @@
+user = {{ postfix_user }}
+password = {{ postfix_pass }}
+hosts = {{ db_host }}
+dbname = {{ postfix_db }}
+query = SELECT domain FROM domain WHERE domain='%s' AND active='1'
