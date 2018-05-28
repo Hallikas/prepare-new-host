@@ -1,0 +1,33 @@
+    - name: Nginx, hide server tokens
+      lineinfile:
+        path: /etc/nginx/nginx.conf
+        regexp: '#?.?#? ?server_tokens (on|off);'
+        line: '        server_tokens off;'
+        state: present
+        validate: '/usr/sbin/nginx -T -c %s'
+
+    - name: Nginx - proxy_params
+      blockinfile: |
+        dest=/etc/nginx/proxy_params backup=yes
+        content="proxy_connect_timeout       600;
+          proxy_send_timeout          600;
+          proxy_read_timeout          600;
+          send_timeout                600;
+
+          proxy_buffering              on;
+          proxy_buffer_size          128k;
+          proxy_buffers            4 256k;
+          proxy_busy_buffers_size    256k;
+          "
+
+    - file: path="/etc/nginx/{{ item.path }}" state=directory owner="{{ item.owner }}" group="{{ item.group}}" mode="{{ item.mode }}"
+      with_filetree: templates/nginx
+      when: item.state == 'directory'
+      no_log: True
+
+    - name: "Copy default template files"
+      template: src="nginx/{{ item.path }}" dest="/etc/nginx/{{ item.path }}" owner="{{ item.owner }}" group="{{ item.group}}" mode="{{ item.mode }}" force=no
+      with_filetree: templates/nginx
+      when: item.state == 'file'
+      no_log: True
+      notify: restart nginx
