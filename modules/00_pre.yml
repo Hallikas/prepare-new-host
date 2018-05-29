@@ -1,9 +1,0 @@
-    - file:
-        path: "{{ logdir }}"
-        state: directory
-        mode: 0750
-
-# Well, we have problems with this. So it is here as reminder
-#   - include_tasks: '{{ item.src }}'
-#     with_filetree: modules/
-#     when: (item.state == 'file' or item.state == 'link') and item.path is match("^.*\.yml$") and item.path is not search("disabled/")

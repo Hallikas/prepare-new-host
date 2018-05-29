@@ -1,9 +1,0 @@
-    - name: Configure shellinabox
-      lineinfile:
-        path: /etc/default/shellinabox
-        regexp: '^#?SHELLINABOX_PORT'
-        line: 'SHELLINABOX_PORT={{ port_shellinabox }}'
-        state: present
-
-    - name: Restart shellinabox
-      service: name=shellinabox state=restarted

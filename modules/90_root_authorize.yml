@@ -1,6 +1,0 @@
-# Give authorized_keys to root and allow ssh. This could be BAD idea!
-    - name: Set authorized key for root from file
-      authorized_key:
-        user: root
-        state: present
-        key: "{{ lookup('file', '/root/.ssh/authorized_keys') }}"
