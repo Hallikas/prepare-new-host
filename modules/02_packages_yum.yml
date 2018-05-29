@@ -1,10 +1,5 @@
     - name: "Install YUM packages"
-      yum:
-        name: "{{ item }}"
-        state: present
-        enablerepo: epel
-      with_items:
-        "{{ yum_packages }}"
+      yum: name="{{ yum_packages }}" state=present enablerepo=epel
       environment:
         RUNLEVEL: 1
       when: ( ansible_pkg_mgr == "yum" )

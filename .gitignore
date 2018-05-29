@@ -8,3 +8,4 @@ prepare-new-host*.yml
 prepare-new-host.retry
 doit
 test*
+modules/.index.lst

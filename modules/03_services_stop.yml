@@ -1,22 +1,15 @@
-    - name: stop fail2ban
-      service: name=fail2ban state=stopped
-    - name: stop mysql
-      service: name=mysql state=stopped
-    - name: stop nfs-server
-      service: name=nfs-server state=stopped
-    - name: stop nginx
-      service: name=nginx state=stopped
-    - name: stop opendkim
-      service: name=opendkim state=stopped
-    - name: stop php7.2-fpm
-      service: name=php7.2-fpm state=stopped
-    - name: stop postfixd
-      service: name=postfix state=stopped
-    - name: stop postgrey
-      service: name=postgrey state=stopped
-    - name: stop rpcbind
-      service: name=rpcbind state=stopped
-    - name: stop shellinabox
-      service: name=shellinabox state=stopped
-    - name: stop sshguard
-      service: name=sshguard state=stopped
+    - name: Stop serviecs
+      service: name={{ item }} state=stopped
+      ignore_errors: True
+      loop:
+       - fail2ban
+       - mysql
+       - nfs-server
+       - nginx
+       - opendkim
+       - php7.2-fpm
+       - postfixd
+       - postgrey
+       - rpcbind
+       - shellinabox
+       - sshguard

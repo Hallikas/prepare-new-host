@@ -8,11 +8,6 @@ cd $(dirname $0)
 # Do cleanup
 /bin/rm prepare-new-host_init.yml prepare-new-host.yml 2> /dev/null
 
-#if [ ! -e "VAULT" ]; then
-#	echo "You should put your VAULT password into file called 'VAULT'."
-#	exit 1
-#fi
-
 if [ -z "$1" ]; then
 	echo "Usage: $(basename ${0}) ip-address-of-target-host"
 	exit 1
@@ -45,15 +40,16 @@ fi
 # First ansible run, should ask SSH and SUDO passwords again
 if [ ! -e .ansible_init_done.${TARGET_HOST} ]; then
 AUTH="--user=${TARGET_USER} --ask-pass --become --ask-become-pass"
-ansible-playbook -i ${TARGET_HOST}, modules/z_ansible_init.yml -l ${TARGET_HOST} ${AUTH} && touch .ansible_init_done.${TARGET_HOST}
+ansible-playbook -i ${TARGET_HOST}, ansible_init.yml -l ${TARGET_HOST} ${AUTH} && touch .ansible_init_done.${TARGET_HOST}
 fi
 
 ###
 ### Create script combination from files in modules
 ### I know that there is correct way to do this, but I like to do it this way,
 ### for now. I may fix this later.
-(for a in $(ls modules/[0-9][0-9]_*.yml);do cat $a;echo;done) > $(basename ${0}).yml
-#(for a in $(ls modules/{00,25,99}_*.yml);do cat $a;echo;done) > $(basename ${0}).yml
+for a in $(find modules/ -name "*.yml"|rev|cut -d/ -f1|rev|sort -n);do find modules -name "$a";done|grep -v "disabled/" > modules/.index.lst
+#(for a in $(ls modules/[0-9][0-9]_*.yml);do cat $a;echo;done) > $(basename ${0}).yml
+(for a in $(cat modules/.index.lst);do cat $a;echo;done) > $(basename ${0}).yml
 
 ### User, sudoers and authorized keys should be ready (ansible_init).  Test
 ### it, this should go without password.
