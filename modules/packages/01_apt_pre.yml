@@ -1,0 +1,11 @@
+    - name: "Update APT Cache"
+      apt: update_cache=yes cache_valid_time=3600
+      when: ( ansible_pkg_mgr == "apt" )
+
+    - name: "Ensure that aptitude is installed (apt)"
+      apt: name=aptitude state=present
+      when: ( ansible_pkg_mgr == "apt" )
+
+    - name: "Update system (apt)"
+      apt: upgrade=safe
+      when: ( ansible_pkg_mgr == "apt" )

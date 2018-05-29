@@ -1,11 +1,11 @@
 # Default values for host customization
-host_name: server
-host_domain: gamehost.fi
-host_ip: 93.90.52.21
-host_mask: 255.255.255.192
-host_gw: 93.90.52.62
-dns_servers: 62.220.226.1 62.220.226.2
-dns_search: gamehost.fi
+host_name: # Vaulted to vault.yml
+host_domain: # Vaulted to vault.yml
+host_ip: # Vaulted to vault.yml
+host_mask: # Vaulted to vault.yml
+host_gw: # Vaulted to vault.yml
+dns_servers: # Vaulted to vault.yml
+dns_search: # Vaulted to vault.yml
 
 # Common directories
 rundir: /run

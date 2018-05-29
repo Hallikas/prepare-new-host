@@ -1,0 +1,5 @@
+    - name: "Install APT packages"
+      apt: name="{{ apt_packages }}" state=present
+      environment:
+        RUNLEVEL: 1
+      when: ( ansible_pkg_mgr == "apt" )
