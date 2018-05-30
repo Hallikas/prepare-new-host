@@ -1,0 +1,12 @@
+## This file describes the network interfaces available on your system
+## For more information, see netplan(5).
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      addresses: [ {{ host_ip }}/24 ]
+      gateway4: {{ host_gw }}
+      nameservers:
+          search: [ {{ dns_search }} ]
+          addresses: [ {{ dns_servers }} ]

@@ -1,0 +1,14 @@
+    - name: Network template
+      template: src=01-netcfg.yaml dest=/etc/netpol/01-netcfg.yaml force=yes backup=yes
+
+#    - name: Network settings
+#      blockinfile: |
+#        dest=/etc/netplan/01-netcfg.yaml backup=yes
+#        insertafter=ethernets:
+#        content='
+#                addresses: [ 10.168.42.198/24 ]
+#                gateway4: 10.168.42.1
+#                    search: [ gamehost.fi ]
+#                        - "10.168.42.1"
+#                        - "8.8.8.8"
+#          '
