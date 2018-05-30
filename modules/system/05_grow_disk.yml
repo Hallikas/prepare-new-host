@@ -1,0 +1,40 @@
+    - name: Maximize system partition
+      shell: |
+        warn=False
+        sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' <<'EOF' | fdisk /dev/xvda
+          d # delete
+          2 # system partition
+          n # new partition
+          p # primary partition
+            # default, partition number
+            # default, start immediately after preceding partition
+            # default, extend partition to end of disk
+          n # Don't remove "Partition #2 contains a LVM2_member signature"
+          t # change partition type
+          2 # select partition
+         83 # Linux LVM
+          w # save partition table
+          q # and we're done
+        EOF
+      changed_when: false
+      failed_when: false
+
+    - name: Resync partitions
+      command: partprobe /dev/xvda
+      changed_when: false
+      failed_when: false
+
+    - name: Resize physical disk
+      command: pvresize /dev/xvda2
+      changed_when: false
+      failed_when: false
+
+    - name: Resize logical volume
+      command: lvresize /dev/vg00/root -l+100%FREE
+      changed_when: false
+      failed_when: false
+
+    - name: Resize filesystem
+      command: btrfs filesystem resize max /
+      changed_when: false
+      failed_when: false
