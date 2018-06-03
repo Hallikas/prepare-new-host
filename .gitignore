@@ -7,5 +7,6 @@ vault.yml
 prepare-new-host*.yml
 prepare-new-host.retry
 doit
+doit.yml
 test*
 modules/.index.lst

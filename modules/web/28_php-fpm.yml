@@ -6,7 +6,7 @@
         line='{{ item.key }} = {{ item.value }}'
       with_items:
         - { key: 'pid', value: '{{ rundir }}/php/php-fpm.pid' }
-        - { key: 'error_log', value: '{{ logdir }}/php-fpm.log' }
+        - { key: 'error_log', value: '{{ logdir }}/nginx/php-fpm.log' }
 
     - name: "PHP 7.2 fpm/pool.d/www.conf"
       lineinfile: >
@@ -21,10 +21,10 @@
         - { key: 'pm.min_spare_servers', value: '2' }
         - { key: 'pm.max_spare_servers', value: '6' }
 
-        - { key: 'access.log', value: '{{ logdir }}/fpm-$pool.log' }
+        - { key: 'access.log', value: '{{ logdir }}/nginx/fpm-$pool.log' }
         - { key: 'access.format', value: '"%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"' }
 
-        - { key: 'php_admin_value[error_log]', value: '{{ logdir }}/fpm-$pool.err' }
+        - { key: 'php_admin_value[error_log]', value: '{{ logdir }}/nginx/fpm-$pool.err' }
         - { key: 'php_admin_flag[log_errors]', value: 'on' }
 
     - name: "PHP 7.2 fpm/php.ini"

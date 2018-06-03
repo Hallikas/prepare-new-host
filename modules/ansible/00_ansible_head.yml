@@ -2,39 +2,43 @@
 - hosts: all
   gather_facts: true
 
+  vars:
+    - do_passwd: "{{ lookup('password', '/dev/null length=12 chars=ascii_letters') }}"
+
   vars_files:
     - conf/vars.yml
     - conf/packages.yml
     - conf/vault.yml
 
-  vars_prompt:
-    - name: host_name
-      prompt: "Hostname (use short name)"
-      default: "{{ host_name }}"
-      private: no
-    - name: host_domain
-      prompt: "Domain name"
-      default: "{{ host_domain }}"
-      private: no
-    - name: host_ip
-      prompt: "IP-Address"
-      default: "{{ host_ip }}"
-      private: no
-    - name: host_mask
-      prompt: "Netmask"
-      default: "{{ host_mask }}"
-      private: no
-    - name: host_gw
-      prompt: "Gateway"
-      default: "{{ host_gw }}"
-      private: no
-    - name: dns_servers
-      prompt: "DNS Servers"
-      default: "{{ dns_servers }}"
-      private: no
-    - name: dns_search
-      prompt: "DNS search path (domains):"
-      default: "{{ dns_search }}"
-      private: no
+#  vars_prompt:
+#    - name: host_name
+#      prompt: "Hostname (use short name)"
+#      default: "{{ host_name }}"
+#      private: no
+#    - name: host_domain
+#      prompt: "Domain name"
+#      default: "{{ host_domain }}"
+#      private: no
+#    - name: host_ip
+#      prompt: "IP-Address"
+#      default: "{{ host_ip }}"
+#      private: no
+#    - name: host_mask
+#      prompt: "Netmask"
+#      default: "{{ host_mask }}"
+#      private: no
+#    - name: host_gw
+#      prompt: "Gateway"
+#      default: "{{ host_gw }}"
+#      private: no
+#    - name: dns_servers
+#      prompt: "DNS Servers"
+#      default: "{{ dns_servers }}"
+#      private: no
+#    - name: dns_search
+#      prompt: "DNS search path (domains):"
+#      default: "{{ dns_search }}"
+#      private: no
 
   tasks:
+    - set_fact: my_root_pass="{{ do_passwd }}"

@@ -25,6 +25,7 @@ yum_packages:
 #
   - nginx
   - mariadb-server
+  - python-mysqldb
   - php-cli
   - php-fpm
 #
@@ -73,6 +74,22 @@ apt_packages:
   - shellinabox
 # Atlassian products fails with newer packages
   - openjdk-8-jdk-headless
+
+# Needed for webmail
+  - php7.2-bz2
+  - php7.2-curl
+  - php7.2-gd
+  - php7.2-imap
+  - php7.2-intl
+  - php7.2-ldap
+  - php7.2-mbstring
+  - php7.2-mcrypt
+  - php7.2-sqlite3
+  - php7.2-xml
+  - php7.2-xmlrpc
+  - php7.2-zip
+
+
 
 # Network
 # - dnsmasq

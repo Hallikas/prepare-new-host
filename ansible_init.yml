@@ -3,7 +3,7 @@
   gather_facts: false
 
   vars_files:
-    - ../conf/vars.yml
+    - conf/vars.yml
 
   tasks:
 # This should be ok, done manually before executing yml

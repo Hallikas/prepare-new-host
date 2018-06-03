@@ -1,7 +1,11 @@
+
+#    - name: Restart server
+#      command: init 6
+#      failed_when: false
+
   handlers:
     - name: restart sshd
       service: name=ssh state=restarted
 
     - name: restart nginx
       service: name=nginx state=restarted
-

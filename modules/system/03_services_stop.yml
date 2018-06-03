@@ -1,0 +1,17 @@
+    - name: Stop services
+      service: name={{ item }} state=stopped
+      ignore_errors: True
+      loop:
+       - nfs-server
+       - rpcbind
+       - chrony
+       - shellinabox
+       - sshguard
+       - fail2ban
+       - mysql
+       - postfix
+       - postgrey
+       - opendkim
+       - dovecot
+       - nginx
+       - php7.2-fpm

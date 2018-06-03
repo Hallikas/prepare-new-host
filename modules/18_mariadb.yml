@@ -21,6 +21,18 @@
     - name: start mariadb
       service: name=mysqld state=started
 
+    - name: Generate mysql root password
+      set_fact:
+        my_root_passwd: "{{ do_passwd }}"
+
+    - name: Install my.cnf for root
+      template: src=mysql/my.cnf dest=~/.my.cnf force=yes
+    - name: Change MySQL root password
+      mysql_user:
+        name: root
+        password: "{{ my_root_passwd }}"
+#       login_unix_socket: "{{ my_socket }}"
+
 # Extra thing, just for reminder for now
 #   - name: Assure that our timezone is installed
 #     shell: |

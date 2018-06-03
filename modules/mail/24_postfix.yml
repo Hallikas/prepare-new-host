@@ -23,7 +23,7 @@
       
     - name: "Rehash transport"
       shell: postmap hash:/etc/postfix/transport
-      when: not transportdb.stat.exists
+#     when: not transportdb.stat.exists
 
     - name: "Check for virtual.db"
       stat:
@@ -32,7 +32,20 @@
       
     - name: "Rehash virtual"
       shell: postmap hash:/etc/postfix/virtual
-      when: not virtualdb.stat.exists
+#     when: not virtualdb.stat.exists
+
+    - name: Remove postfix user
+      mysql_user:
+        name: postfix
+        host_all: True
+        state: absent
+
+    - name: MySQL User, Postfix
+      mysql_user:
+        name: "{{ postfix_user }}"
+        password: "{{ postfix_pass }}"
+        priv: 'common_postfix.*:ALL'
+        state: present
 
     - name: Restart postfix
       service: name=postfix state=restarted

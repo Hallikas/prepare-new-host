@@ -4,5 +4,18 @@
     - name: Dovecot configuration, mysql support
       template: src=dovecot/dovecot-sql.conf.ext dest=/etc/dovecot backup=yes
 
+    - name: Remove dovecot user
+      mysql_user:
+        name: dovecot
+        host_all: True
+        state: absent
+
+    - name: MySQL User, dovecot
+      mysql_user:
+        name: "{{ dovecot_user }}"
+        password: "{{ dovecot_pass }}"
+        priv: 'common_postfix.*:ALL'
+        state: present
+
     - name: Restart dovecot
       service: name=dovecot state=restarted

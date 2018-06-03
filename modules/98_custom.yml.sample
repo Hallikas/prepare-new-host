@@ -1,0 +1,29 @@
+##
+## Put your persona customization stuff here... This is LAST to be executed
+    - name: 19_custom
+      debug: msg="Marker 19"
+      no_log: true
+    
+##
+## MySQL Users
+    - name: MySQL User, myadmin
+      mysql_user:
+        name: mysql-admin
+        password: "{{ master_password }}"
+        priv: '*.*:ALL,GRANT'
+        state: present
+
+#   - name: Import file.sql similar to mysql -u <username> -p <password> < hostname.sql
+#     mysql_db:
+#       state: import
+#       name: all
+#       target: /tmp/{{ inventory_hostname }}.sql
+#       collation: utf8mb4
+#       encoding: utf8
+
+#   - name: Create db
+#     mysql_db: 
+#       name: test
+#       collation: utf8mb4
+#       encoding: utf8
+#       state: present

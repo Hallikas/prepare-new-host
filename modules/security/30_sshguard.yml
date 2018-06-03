@@ -1,5 +1,10 @@
     - name: defaults for sshguard
       template: src=sshguard/defaults dest=/etc/default/sshguard backup=yes
 
+    - name: Whitelist hosts on sshguard
+      blockinfile:
+        path: /etc/sshguard/whitelist
+        content: "{{ whitelist_servers }}"
+
     - name: Restart sshguard
       service: name=sshguard state=restarted

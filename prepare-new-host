@@ -31,7 +31,7 @@ fi
 # Target host must have python
 if [ ! -e .ansible_pre_done.${TARGET_HOST} ]; then
 echo "Python MUST be installed on target host" && \
-ssh -t ${TARGET_USER}@${TARGET_HOST} "[ -e /usr/bin/python ] || sudo apt-get -y install python" && \
+ssh -o StrictHostKeyChecking=no -t ${TARGET_USER}@${TARGET_HOST} "[ -e /usr/bin/python ] || sudo apt-get -y install python" && \
 touch .ansible_pre_done.${TARGET_HOST}
 fi
 
@@ -47,8 +47,8 @@ fi
 ### Create script combination from files in modules
 ### I know that there is correct way to do this, but I like to do it this way,
 ### for now. I may fix this later.
-for a in $(find modules/ -name "*.yml"|rev|cut -d/ -f1|rev|sort -n);do find modules -name "$a";done|grep -v "disabled/" > modules/.index.lst
-#(for a in $(ls modules/[0-9][0-9]_*.yml);do cat $a;echo;done) > $(basename ${0}).yml
+##(for a in $(ls modules/[0-9][0-9]_*.yml);do cat $a;echo;done) > $(basename ${0}).yml
+for a in $(find modules/ -name "[a-zA-Z0-9]*.yml"|rev|cut -d/ -f1|rev|sort -n);do find modules -name "$a";done|grep -v "disabled/" > modules/.index.lst
 (for a in $(cat modules/.index.lst);do cat $a;echo;done) > $(basename ${0}).yml
 
 ### User, sudoers and authorized keys should be ready (ansible_init).  Test

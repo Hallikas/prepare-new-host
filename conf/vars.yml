@@ -9,7 +9,7 @@ dns_search: # Vaulted to vault.yml
 
 # Common directories
 rundir: /run
-logdir: /data/var/log
+logdir: /var/log
 ssl_path: /etc/ssl/private
 
 # Shell in a box
@@ -17,7 +17,7 @@ port_shellinabox: !unsafe 8022
 
 # Mysql/MariaDB variables
 my_socket: /var/run/mysqld/mysqld.sock
-my_datadir: /data/var/lib/mysql
+my_datadir: /var/lib/mysql
 
 # PHP
 php_socket: "{{ rundir }}/php/php-fpm.sock"
@@ -25,6 +25,8 @@ php_socket: "{{ rundir }}/php/php-fpm.sock"
 # Postfix wants 127.0.0.1
 # Also used in mysql bind_address!
 db_host: !unsafe 127.0.0.1
+
+my_root_passwd: # Vaulted to vault.yml
 
 my_backup_user: backup
 my_backup_pass: # Vaulted to vault.yml
